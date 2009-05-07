@@ -31,6 +31,12 @@
             <xsl:with-param name="elements" select="$metadata/b4p:revokeAction"/>
         </xsl:call-template>
     </xsl:template>
+    
+    <xsl:template match="tms:dismissAction">
+        <xsl:call-template name="change">
+            <xsl:with-param name="elements" select="$metadata/b4p:dismissAction"/>
+        </xsl:call-template>
+    </xsl:template>
 
     <xsl:template match="tms:saveAction">
         <xsl:call-template name="change">

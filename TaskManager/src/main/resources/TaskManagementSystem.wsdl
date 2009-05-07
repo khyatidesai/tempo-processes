@@ -285,6 +285,7 @@
 					<xsd:element name="isChainedBefore" type="xsd:string" maxOccurs="1" minOccurs="0"/>
 					<xsd:element name="previousTaskId" type="xsd:string" maxOccurs="1" minOccurs="0"/>
 				    <xsd:element name="claimAction" type="tns:accessControlType" maxOccurs="1" minOccurs="0"/>
+				    <xsd:element name="dismissAction" type="tns:accessControlType" maxOccurs="1" minOccurs="0"/>
                     <xsd:element name="revokeAction" type="tns:accessControlType" maxOccurs="1" minOccurs="0"/>
                     <xsd:element name="saveAction" type="tns:accessControlType" maxOccurs="1" minOccurs="0"/>
                     <xsd:element name="completeAction" type="tns:accessControlType" maxOccurs="1" minOccurs="0"/>
