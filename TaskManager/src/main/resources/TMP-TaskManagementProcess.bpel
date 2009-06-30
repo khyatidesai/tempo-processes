@@ -38,6 +38,7 @@
             <tns:taskType></tns:taskType>
             <tns:description></tns:description>
             <tns:processId></tns:processId>
+            <tns:instanceId></tns:instanceId>
             <tns:creationDate></tns:creationDate>
             <tns:userOwner></tns:userOwner>
             <tns:roleOwner></tns:roleOwner>
@@ -88,6 +89,7 @@
     <b4p:taskType></b4p:taskType>
     <b4p:description></b4p:description>
     <b4p:processId></b4p:processId>
+    <b4p:instanceId></b4p:instanceId>
     <b4p:creationDate></b4p:creationDate>
     <b4p:userOwner></b4p:userOwner>
     <b4p:roleOwner></b4p:roleOwner>
@@ -220,6 +222,11 @@
         </bpel:sequence>
       </bpel:elseif>
     </bpel:if>
+    <bpel:empty bpmn:label="Exclusive_Data-based_Gateway" name="Exclusive_Data-based_Gateway" bpmn:id="_QOOEsLD5Edy6MtvbqSLrQw">
+      <bpel:links>
+        <bpel:targets></bpel:targets>
+      </bpel:links>
+    </bpel:empty>
     <bpel:assign bpmn:label="Prepare creation Task in Database" name="Prepare_creation_Task_in_Database" bpmn:id="_Yppk0Kd1EdyId4P63ChZuw">
       <bpel:copy>
         <bpel:from>"activity"</bpel:from>
@@ -240,6 +247,10 @@
       <bpel:copy>
         <bpel:from>bpel:doXslTransform("userRoleOwner.xsl", $createTMSTaskRequest.createRequest, "metadata", $createTaskRequest.root/b4p:taskMetaData)</bpel:from>
         <bpel:to>$createTMSTaskRequest.createRequest</bpel:to>
+      </bpel:copy>
+      <bpel:copy ignoreUninitializedFromVariable="yes" ignoreMissingFromData="yes">
+        <bpel:from>$createTaskRequest.root/b4p:taskMetaData/b4p:instanceId</bpel:from>
+        <bpel:to>$createTMSTaskRequest.createRequest/tns:task/tns:metadata/tns:instanceId</bpel:to>
       </bpel:copy>
     </bpel:assign>
     <bpel:if>
@@ -264,6 +275,11 @@
         </bpel:sequence>
       </bpel:elseif>
     </bpel:if>
+    <bpel:empty bpmn:label="Exclusive_Data-based_Gateway" name="Exclusive_Data-based_Gateway-1" bpmn:id="_SsT24MMEEdyCWZdoTEFyaQ">
+      <bpel:links>
+        <bpel:targets></bpel:targets>
+      </bpel:links>
+    </bpel:empty>
     <bpel:scope bpmn:label="SubProcess" name="SubProcess" bpmn:id="_qCKssG7fEd2I0ZzPPBs2Wg">
       <bpel:faultHandlers>
         <bpel:catchAll>
@@ -330,6 +346,11 @@
         <bpel:invoke partnerLink="taskManagementProcessAndPreviousProcessTaskManagerForTMPPortPlkVar" portType="b4p:TMPPortType" operation="nextTaskReady" inputVariable="b4pNextTaskReadyMsg" bpmn:label="Notify previous Task Manager" name="Notify_previous_Task_Manager-1" bpmn:id="_DkaEoKgeEdylDI4yblkdQQ"></bpel:invoke>
       </bpel:sequence>
     </bpel:if>
+    <bpel:empty bpmn:label="Exclusive_Data-based_Gateway" name="Exclusive_Data-based_Gateway-2" bpmn:id="_XFgswKgeEdylDI4yblkdQQ">
+      <bpel:links>
+        <bpel:targets></bpel:targets>
+      </bpel:links>
+    </bpel:empty>
     <bpel:scope bpmn:label="SubProcess" name="SubProcess-1" bpmn:id="_TbKiIKhDEdyQFMjeTyvJzg">
       <bpel:variables>
         <bpel:variable name="tnsReassignRequestMsg" messageType="tns:reassignRequest"/>
@@ -387,6 +408,7 @@
     <b4p:taskType></b4p:taskType>
     <b4p:description></b4p:description>
     <b4p:processId></b4p:processId>
+    <b4p:instanceId></b4p:instanceId>
     <b4p:creationDate></b4p:creationDate>
     <b4p:userOwner></b4p:userOwner>
     <b4p:roleOwner></b4p:roleOwner>
@@ -678,6 +700,7 @@
     <b4p:taskType></b4p:taskType>
     <b4p:description></b4p:description>
     <b4p:processId></b4p:processId>
+    <b4p:instanceId></b4p:instanceId>
     <b4p:creationDate></b4p:creationDate>
     <b4p:userOwner></b4p:userOwner>
     <b4p:roleOwner></b4p:roleOwner>
@@ -927,6 +950,7 @@
     <b4p:taskType></b4p:taskType>
     <b4p:description></b4p:description>
     <b4p:processId></b4p:processId>
+    <b4p:instanceId></b4p:instanceId>
     <b4p:creationDate></b4p:creationDate>
     <b4p:userOwner></b4p:userOwner>
     <b4p:roleOwner></b4p:roleOwner>
@@ -1092,6 +1116,11 @@
                     </bpel:assign>
                   </bpel:sequence>
                 </bpel:if>
+                <bpel:empty bpmn:label="Exclusive_Data-based_Gateway" name="Exclusive_Data-based_Gateway-3" bpmn:id="_uyxHQKhVEdyQFMjeTyvJzg">
+                  <bpel:links>
+                    <bpel:targets></bpel:targets>
+                  </bpel:links>
+                </bpel:empty>
                 <bpel:assign bpmn:label="send  Complete Task&#13;&#10; response back to UI" name="send__Complete_Task___response_back_to_UI" bpmn:id="_yEJboKhZEdyXuZws7kaYiQ">
                   <bpel:copy>
                     <bpel:from>$notifyTaskCompletionResponse.root/b4p:status</bpel:from>
@@ -1291,6 +1320,7 @@
     <b4p:taskType></b4p:taskType>
     <b4p:description></b4p:description>
     <b4p:processId></b4p:processId>
+    <b4p:instanceId></b4p:instanceId>
     <b4p:creationDate></b4p:creationDate>
     <b4p:userOwner></b4p:userOwner>
     <b4p:roleOwner></b4p:roleOwner>
@@ -1568,6 +1598,7 @@
     <b4p:taskType></b4p:taskType>
     <b4p:description></b4p:description>
     <b4p:processId></b4p:processId>
+    <b4p:instanceId></b4p:instanceId>
     <b4p:creationDate></b4p:creationDate>
     <b4p:userOwner></b4p:userOwner>
     <b4p:roleOwner></b4p:roleOwner>
@@ -1664,6 +1695,11 @@
                     <bpel:invoke partnerLink="taskManagementProcessAndTaskManagementSystemForPortTaskManagementServicesSOAPPlkVar" portType="tns:TaskManagementServices" operation="reassign" inputVariable="tnsReassignRequestMsg" outputVariable="tnsReassignResponseMsg" bpmn:label="reassign revoked task" name="reassign_revoked_task-1" bpmn:id="_TtOm0KklEdyFPr8ebhWveQ"></bpel:invoke>
                   </bpel:sequence>
                 </bpel:if>
+                <bpel:empty bpmn:label="Exclusive_Data-based_Gateway" name="Exclusive_Data-based_Gateway-4" bpmn:id="_8zpt4A7REd6OcttEdwEXRA">
+                  <bpel:links>
+                    <bpel:targets></bpel:targets>
+                  </bpel:links>
+                </bpel:empty>
                 <bpel:reply partnerLink="taskManagementProcessAndUIFWForUIFWPortPlkVar" portType="b4p:UIFWPortType" operation="revokeTask" variable="revokeTaskResponse" bpmn:label="send revoke Task &#13;&#10;response to UIFW" name="send_revoke_Task___response_to_UIFW" bpmn:id="_FpfJ0KkmEdyFPr8ebhWveQ"></bpel:reply>
                 <bpel:assign bpmn:label="mark task as &#13;&#10;not claimed" name="mark_task_as___not_claimed" bpmn:id="_KlyrwKkmEdyFPr8ebhWveQ">
                   <bpel:copy>
@@ -1849,6 +1885,7 @@
     <b4p:taskType></b4p:taskType>
     <b4p:description></b4p:description>
     <b4p:processId></b4p:processId>
+    <b4p:instanceId></b4p:instanceId>
     <b4p:creationDate></b4p:creationDate>
     <b4p:userOwner></b4p:userOwner>
     <b4p:roleOwner></b4p:roleOwner>
@@ -1947,6 +1984,11 @@
                           </bpel:sequence>
                         </bpel:else>
                       </bpel:if>
+                      <bpel:empty bpmn:label="Exclusive_Data-based_Gateway" name="Exclusive_Data-based_Gateway-5" bpmn:id="_IGJUIKkTEdyRnIK1kDiFhA">
+                        <bpel:links>
+                          <bpel:targets></bpel:targets>
+                        </bpel:links>
+                      </bpel:empty>
                       <bpel:assign bpmn:label="Invoke TMS to reassign claimed Task" name="Invoke_TMS_to_reassign_claimed_Task" bpmn:id="_D1muMKkiEdyFPr8ebhWveQ">
                         <bpel:copy>
                           <bpel:from>$claimTaskRequest.root/b4p:participantToken</bpel:from>
@@ -1969,6 +2011,11 @@
                     </bpel:sequence>
                   </bpel:else>
                 </bpel:if>
+                <bpel:empty bpmn:label="Exclusive_Data-based_Gateway" name="Exclusive_Data-based_Gateway-6" bpmn:id="_qXKMIA7LEd6OcttEdwEXRA">
+                  <bpel:links>
+                    <bpel:targets></bpel:targets>
+                  </bpel:links>
+                </bpel:empty>
                 <bpel:assign bpmn:label="send claim Task &#13;&#10;response to UIFW" name="send_claim_Task___response_to_UIFW" bpmn:id="_Vv8-cKkjEdyFPr8ebhWveQ">
                   <bpel:copy>
                     <bpel:from>true()</bpel:from>
@@ -2155,6 +2202,7 @@
     <b4p:taskType></b4p:taskType>
     <b4p:description></b4p:description>
     <b4p:processId></b4p:processId>
+    <b4p:instanceId></b4p:instanceId>
     <b4p:creationDate></b4p:creationDate>
     <b4p:userOwner></b4p:userOwner>
     <b4p:roleOwner></b4p:roleOwner>
