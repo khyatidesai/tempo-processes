@@ -63,6 +63,22 @@
 					</xsd:sequence>
 				</xsd:complexType>
 			</xsd:element>
+			<xsd:element name="getTaskOwnerAndStateResponse">
+                <xsd:complexType>
+                    <xsd:sequence>					
+						<xsd:element name="task" type="tns:taskOwnerAndState"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+			<xsd:element name="getTaskOwnerAndStateRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="taskId" type="xsd:string"/>
+                        <xsd:element name="participantToken" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
 			<xsd:element name="setOutputRequest">
 				<xsd:complexType>
 					<xsd:sequence>
@@ -293,6 +309,18 @@
 					<xsd:element name="attachments" type="tns:attachments"/>
   				</xsd:sequence>
 			</xsd:complexType>
+			<xsd:complexType name="taskOwnerAndStateMetadata">
+                <xsd:sequence>
+					<xsd:element minOccurs="0" name="taskState" type="xsd:token"/>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="userOwner" type="xsd:string"/>
+				</xsd:sequence>
+			</xsd:complexType>	
+			<xsd:complexType name="taskOwnerAndState">
+				<xsd:sequence>
+					<xsd:element name="metadata" type="tns:taskOwnerAndStateMetadata"/>
+				</xsd:sequence>	
+            </xsd:complexType>
+
 			<xsd:complexType name="task">
 				<xsd:sequence>
 					<xsd:element name="metadata" type="tns:taskMetadata"/>
@@ -408,6 +436,12 @@
 	<wsdl:message name="getTaskRequest">
 		<wsdl:part name="getTaskRequest" element="tns:getTaskRequest"/>
 	</wsdl:message>
+	<wsdl:message name="getTaskOwnerAndStateRequest">
+        <wsdl:part name="getTaskOwnerAndStateRequest" element="tns:getTaskOwnerAndStateRequest"/>
+    </wsdl:message>
+    <wsdl:message name="getTaskOwnerAndStateResponse">
+        <wsdl:part name="getTaskOwnerAndStateResponse" element="tns:getTaskOwnerAndStateResponse"/>
+    </wsdl:message>
 	<wsdl:message name="setOutputRequest">
 		<wsdl:part name="setOutputRequest" element="tns:setOutputRequest"/>
 	</wsdl:message>
@@ -527,6 +561,13 @@
 		<wsdl:operation name="getTask">
 			<wsdl:input message="tns:getTaskRequest"/>
 			<wsdl:output message="tns:getTaskResponse"/>
+			<wsdl:fault name="UnavailableTask" message="tns:unavailableTaskFault"/>
+			<wsdl:fault name="InvalidParticipantToken" message="tns:invalidParticipantTokenFault"/>
+			<wsdl:fault name="InvalidInputMessage" message="tns:invalidInputMessageFault"/>
+		</wsdl:operation>
+		<wsdl:operation name="getTaskOwnerAndState">
+			<wsdl:input message="tns:getTaskOwnerAndStateRequest"/>
+			<wsdl:output message="tns:getTaskOwnerAndStateResponse"/>
 			<wsdl:fault name="UnavailableTask" message="tns:unavailableTaskFault"/>
 			<wsdl:fault name="InvalidParticipantToken" message="tns:invalidParticipantTokenFault"/>
 			<wsdl:fault name="InvalidInputMessage" message="tns:invalidInputMessageFault"/>
@@ -730,6 +771,24 @@
 		
 		<wsdl:operation name="getTask">
 			<soap:operation soapAction="http://www.intalio.com/BPMS/Workflow/TaskManagementServices-20051109/getTask"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="UnavailableTask">
+				<soap:fault name="UnavailableTask" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="InvalidParticipantToken">
+				<soap:fault name="InvalidParticipantToken" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="InvalidInputMessage">
+				<soap:fault name="InvalidInputMessage" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getTaskOwnerAndState">
+			<soap:operation soapAction="http://www.intalio.com/BPMS/Workflow/TaskManagementServices-20051109/getTaskOwnerAndState"/>
 			<wsdl:input>
 				<soap:body use="literal"/>
 			</wsdl:input>
