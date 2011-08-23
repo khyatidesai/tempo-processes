@@ -1187,10 +1187,21 @@
                                 <bpel:from>$notifyTaskCompletionResponse.root/b4p:errorReason</bpel:from>
                                 <bpel:to>$completeTaskResponse.root/b4p:errorReason</bpel:to>
                               </bpel:copy>
+                              <bpel:copy>
+                                <bpel:from>true()</bpel:from>
+                                <bpel:to>$taskCompleted</bpel:to>
+                              </bpel:copy>
                             </bpel:assign>
                           </bpel:sequence>
                         </bpel:else>
                       </bpel:if>
+                      <bpel:empty>
+                        <bpel:links>
+                          <bpel:sources>
+                            <bpel:source linkName="_1ElAYMPeEd6KT51CNOEWqw_to__VE5mUM1lEeCgyJYloHWTlQ"/>
+                          </bpel:sources>
+                        </bpel:links>
+                      </bpel:empty>
                     </bpel:sequence>
                   </bpel:else>
                 </bpel:if>
