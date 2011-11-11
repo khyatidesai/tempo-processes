@@ -915,7 +915,7 @@
                   </bpel:elseif>
                   <bpel:else>
                     <bpel:if>
-                      <bpel:condition>$taskClaimed</bpel:condition>
+                      <bpel:condition>$tnsGetTaskOwnerAndStateResponseMsg.getTaskOwnerAndStateResponse/tns:task/tns:metadata/tns:taskState = "CLAIMED"</bpel:condition>
                       <bpel:empty/>
                       <bpel:else>
                         <bpel:sequence>
