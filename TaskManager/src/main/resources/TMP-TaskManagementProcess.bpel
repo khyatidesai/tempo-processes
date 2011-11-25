@@ -546,6 +546,7 @@
   <tns:roleOwner></tns:roleOwner>
   <tns:taskState></tns:taskState>
   <tns:participantToken></tns:participantToken>
+  <tns:userAction></tns:userAction>
 </tns:reassignRequest></bpel:literal>
               </bpel:from>
               <bpel:to>$tnsReassignRequestMsg.reassignRequest</bpel:to>
@@ -808,6 +809,10 @@
                   <bpel:copy>
                     <bpel:from>bpel:doXslTransform("userRoleOwner.xsl", $tnsReassignRequestMsg.reassignRequest, "metadata", $escalateTaskRequest.root)</bpel:from>
                     <bpel:to>$tnsReassignRequestMsg.reassignRequest</bpel:to>
+                  </bpel:copy>
+                  <bpel:copy>
+                    <bpel:from>"ESCALATE"</bpel:from>
+                    <bpel:to>$tnsReassignRequestMsg.reassignRequest/tns:userAction</bpel:to>
                   </bpel:copy>
                 </bpel:assign>
                 <bpel:invoke partnerLink="taskManagementProcessAndTaskManagementSystemForPortTaskManagementServicesSOAPPlkVar" portType="tns:TaskManagementServices" operation="reassign" inputVariable="tnsReassignRequestMsg" outputVariable="tnsReassignResponseMsg" bpmn:label="Invoke TMS to reassign Task" name="Invoke_TMS_to_reassign_Task-1" bpmn:id="_p3IKIKhJEdyQFMjeTyvJzg"></bpel:invoke>
