@@ -350,7 +350,7 @@
 
 			<xsd:element name="nextTaskURL" type="xsd:string"
 				minOccurs="0" />
-			<xsd:element name="attachments">
+			<xsd:element name="attachments"  minOccurs="0">
 				<xsd:complexType>
 					<xsd:sequence>
 						<xsd:element name="attachment" type="b4p:attachment"
