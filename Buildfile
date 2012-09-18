@@ -2,7 +2,7 @@ require "rubygems"
 require "buildr"
 
 # Keep this structure to allow the build system to update version numbers.
-VERSION_NUMBER = "6.3.00"
+VERSION_NUMBER = "6.3.01-SNAPSHOT"
 
 repositories.release_to[:username] ||= "release"
 repositories.release_to[:url] ||= "sftp://www.intalio.org/var/www-org/public/maven2"
