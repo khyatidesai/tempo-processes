@@ -115,6 +115,7 @@
                                     <AbsenceRequest:taskMetaData>
                                     <AbsenceRequest:description>Examples - Absence Approval</AbsenceRequest:description>
                                     <AbsenceRequest:processId/>
+									<AbsenceRequest:instanceId/>
                                     <AbsenceRequest:userOwner/>
                                     <AbsenceRequest:roleOwner>examples\manager</AbsenceRequest:roleOwner>
                                     <AbsenceRequest:formUrl>http://localhost:8080/wds/AbsenceRequest/AbsenceApproval.xform</AbsenceRequest:formUrl>
@@ -128,12 +129,16 @@
                                     </AbsenceRequest:createTaskRequest>
                                 </bpel:literal>
                             </bpel:from>
-                            <bpel:to>$createTaskRequest.createTaskRequest</bpel:to>
+                            <bpel:to>$createTaskRequest.createTaskRequest</bpel:to>							
                         </bpel:copy>
                         <bpel:copy>
                             <bpel:from>$initProcessRequest.initProcessRequest/AbsenceRequest:taskId</bpel:from>
                             <bpel:to>$createTaskRequest.createTaskRequest/AbsenceRequest:taskMetaData/AbsenceRequest:processId</bpel:to>
                         </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from>$ode:pid</bpel:from>
+                            <bpel:to>$createTaskRequest.createTaskRequest/AbsenceRequest:taskMetaData/AbsenceRequest:instanceId</bpel:to>
+                        </bpel:copy>						
                         <bpel:copy>
                             <bpel:from>$initProcessRequest.initProcessRequest/AbsenceRequest:taskOutput/AbsenceRequest:output</bpel:from>
                             <bpel:to>$createTaskRequest.createTaskRequest/AbsenceRequest:taskInput/AbsenceRequest:input</bpel:to>
