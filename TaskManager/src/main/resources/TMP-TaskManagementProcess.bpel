@@ -482,6 +482,7 @@
   <b4p:taskOutput></b4p:taskOutput>
   <b4p:user></b4p:user>
   <b4p:status></b4p:status>
+  <b4p:participantToken></b4p:participantToken>
 </b4p:notifyTaskCompletionRequest></bpel:literal>
                   </bpel:from>
                   <bpel:to>$userBusinessProcess1NotifyTaskCompletionRequestMsg.root</bpel:to>
@@ -675,6 +676,7 @@
     <b4p:taskOutput></b4p:taskOutput>
     <b4p:status></b4p:status>
     <b4p:user></b4p:user>
+    <b4p:participantToken></b4p:participantToken>
 </b4p:notifyTaskCompletionRequest></bpel:literal>
               </bpel:from>
               <bpel:to>$notifyTaskCompletionRequest.root</bpel:to>
@@ -1159,6 +1161,10 @@
                               <bpel:copy ignoreUninitializedFromVariable="yes" ignoreMissingFromData="yes">
                                 <bpel:from>$completeTaskRequest.root/b4p:user</bpel:from>
                                 <bpel:to>$notifyTaskCompletionRequest.root/b4p:user</bpel:to>
+                              </bpel:copy>
+                              <bpel:copy>
+                                <bpel:from>$completeTaskRequest.root/b4p:participantToken</bpel:from>
+                                <bpel:to>$notifyTaskCompletionRequest.root/b4p:participantToken</bpel:to>
                               </bpel:copy>
                             </bpel:assign>
                             <bpel:invoke partnerLink="tMPAndUBPPlkVar" portType="UserBusinessProcess1:userProcessPortType" operation="notifyTaskCompletion" inputVariable="notifyTaskCompletionRequest" outputVariable="notifyTaskCompletionResponse" bpmn:label="notify Task Completion Request" name="notify_Task_Completion_Request-1" bpmn:id="_JP7KQKhQEdyQFMjeTyvJzg"></bpel:invoke>

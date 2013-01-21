@@ -198,7 +198,7 @@
 				<xsd:element name="taskOutput" />
 				<xsd:element name="user" type="xsd:string" />
 				<xsd:element name="status" type="xsd:string" />
-
+				<xsd:element name="participantToken" type="xsd:string"/>
 			</xsd:sequence>
 
 		</xsd:complexType>
