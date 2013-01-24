@@ -156,6 +156,40 @@
 
 	</xsd:element>
 
+	<xsd:element name="reassignTaskRequest">
+
+		<xsd:complexType>
+
+			<xsd:sequence>
+
+				<xsd:element name="taskId" type="xsd:string" />
+
+				<xsd:element name="userOwner" type="xsd:string" />
+
+				<xsd:element name="roleOwner" type="xsd:string" />
+
+				<xsd:element name="participantToken" type="xsd:string" />
+
+			</xsd:sequence>
+
+		</xsd:complexType>
+
+	</xsd:element>
+
+	<xsd:element name="reassignTaskResponse">
+
+		<xsd:complexType>
+
+			<xsd:sequence>
+
+				<xsd:element name="status" type="xsd:string" />
+
+			</xsd:sequence>
+
+		</xsd:complexType>
+
+	</xsd:element>
+
 	<xsd:element name="revokeTaskRequest">
 
 		<xsd:complexType>

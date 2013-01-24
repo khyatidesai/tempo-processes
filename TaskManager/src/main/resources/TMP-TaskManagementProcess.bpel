@@ -25,6 +25,7 @@
     <bpel:variable name="createTaskResponse" messageType="b4p:createTaskResponse"/>
     <bpel:variable name="initialOwners" type="tns:owners"/>
     <bpel:variable name="b4pNextTaskReadyMsg" messageType="b4p:nextTaskReady"/>
+    <bpel:variable name="teaskReassigned" type="xs:boolean"/>
   </bpel:variables>
   <bpel:sequence>
     <bpel:receive partnerLink="tMPAndUBPPlkVar" portType="b4p:UserBusinessProcessPortType" operation="createTask" variable="createTaskRequest" createInstance="yes" bpmn:label="Create Task" name="Create_Task" bpmn:id="_kh8I0KdyEdyId4P63ChZuw"></bpel:receive>
@@ -182,6 +183,12 @@
 </b4p:chainedExecution></bpel:literal>
         </bpel:from>
         <bpel:to>$b4pNextTaskReadyMsg.root</bpel:to>
+      </bpel:copy>
+      <bpel:copy bpmn:label="$teaskReassigned">
+        <bpel:from>
+          <bpel:literal></bpel:literal>
+        </bpel:from>
+        <bpel:to>$teaskReassigned</bpel:to>
       </bpel:copy>
     </bpel:assign>
     <bpel:assign bpmn:label="Create Task" name="Create_Task-1" bpmn:id="_kh8I0KdyEdyId4P63ChZuw">
@@ -381,6 +388,8 @@
         <bpel:variable name="b4pNextTaskReadyMsg" messageType="b4p:nextTaskReady"/>
         <bpel:variable name="tnsGetTaskOwnerAndStateRequestMsg" messageType="tns:getTaskOwnerAndStateRequest"/>
         <bpel:variable name="tnsGetTaskOwnerAndStateResponseMsg" messageType="tns:getTaskOwnerAndStateResponse"/>
+        <bpel:variable name="b4pReassignTaskRequestMsg" messageType="b4p:reassignTaskRequest"/>
+        <bpel:variable name="b4pReassignTaskResponseMsg" messageType="b4p:reassignTaskResponse"/>
       </bpel:variables>
       <bpel:faultHandlers>
         <bpel:catch faultName="this:DeadlineReached">
@@ -792,6 +801,15 @@
               </bpel:from>
               <bpel:to>$tnsGetTaskOwnerAndStateRequestMsg.getTaskOwnerAndStateRequest</bpel:to>
             </bpel:copy>
+            <bpel:copy bpmn:label="$b4pReassignTaskResponseMsg">
+              <bpel:from>
+                <bpel:literal>
+<b4p:reassignTaskResponse>
+  <b4p:status></b4p:status>
+</b4p:reassignTaskResponse></bpel:literal>
+              </bpel:from>
+              <bpel:to>$b4pReassignTaskResponseMsg.root</bpel:to>
+            </bpel:copy>
           </bpel:assign>
           <bpel:pick bpmn:label="Waiting for requests" name="Waiting_for_requests" bpmn:id="_ESlcoKhHEdyQFMjeTyvJzg">
             <bpel:onMessage partnerLink="tMPAndUBPPlkVar" portType="b4p:UserBusinessProcessPortType" operation="escalateTask" variable="escalateTaskRequest" bpmn:label="Receive escalate Task Request" name="Receive_escalate_Task_Request" bpmn:id="_P5U2QKhHEdyQFMjeTyvJzg">
@@ -944,6 +962,17 @@
                                 </bpel:copy>
                               </bpel:assign>
                             </bpel:sequence>
+                            <bpel:elseif>
+                              <bpel:condition>$teaskReassigned</bpel:condition>
+                              <bpel:sequence>
+                                <bpel:assign bpmn:label="Save previous owners from reassign request" name="Save_previous_owners_from_reassign_request" bpmn:id="_uZo0YGX1EeKn5duZTyY8yw">
+                                  <bpel:copy>
+                                    <bpel:from>bpel:doXslTransform("userRoleOwner.xsl", $b4pReassignTaskRequestMsg.root, "metadata", $initialOwners)</bpel:from>
+                                    <bpel:to>$initialOwners</bpel:to>
+                                  </bpel:copy>
+                                </bpel:assign>
+                              </bpel:sequence>
+                            </bpel:elseif>
                             <bpel:else>
                               <bpel:sequence>
                                 <bpel:assign bpmn:label="save previous owners from creation request" name="save_previous_owners_from_creation_request" bpmn:id="_ChVnwKkTEdyRnIK1kDiFhA">
@@ -1248,6 +1277,43 @@
                   </bpel:links>
                 </bpel:empty>
                 <bpel:reply partnerLink="taskManagementProcessAndUIFWForUIFWPortPlkVar" portType="b4p:UIFWPortType" operation="completeTask" variable="completeTaskResponse" bpmn:label="send  Complete Task&#13;&#10; response back to UI" name="send__Complete_Task___response_back_to_UI" bpmn:id="_yEJboKhZEdyXuZws7kaYiQ"></bpel:reply>
+              </bpel:sequence>
+            </bpel:onMessage>
+            <bpel:onMessage partnerLink="taskManagementProcessAndUIFWForUIFWPortPlkVar" portType="b4p:UIFWPortType" operation="reassignTask" variable="b4pReassignTaskRequestMsg" bpmn:label="Receive Reassign Task Request" name="Receive_Reassign_Task_Request" bpmn:id="_1qzuMGXwEeKn5duZTyY8yw">
+              <bpel:correlations>
+                <bpel:correlation set="task" initiate="join"/>
+              </bpel:correlations>
+              <bpel:sequence>
+                <bpel:assign bpmn:label="Invoke TMS to reassign Task" name="Invoke_TMS_to_reassign_Task-2" bpmn:id="_6sT5MGXwEeKn5duZTyY8yw">
+                  <bpel:copy>
+                    <bpel:from>"REASSIGN"</bpel:from>
+                    <bpel:to>$tnsReassignRequestMsg.reassignRequest/tns:userAction</bpel:to>
+                  </bpel:copy>
+                  <bpel:copy>
+                    <bpel:from>"READY"</bpel:from>
+                    <bpel:to>$tnsReassignRequestMsg.reassignRequest/tns:taskState</bpel:to>
+                  </bpel:copy>
+                  <bpel:copy>
+                    <bpel:from>$b4pReassignTaskRequestMsg.root/b4p:taskId</bpel:from>
+                    <bpel:to>$tnsReassignRequestMsg.reassignRequest/tns:taskId</bpel:to>
+                  </bpel:copy>
+                  <bpel:copy>
+                    <bpel:from>$b4pReassignTaskRequestMsg.root/b4p:participantToken</bpel:from>
+                    <bpel:to>$tnsReassignRequestMsg.reassignRequest/tns:participantToken</bpel:to>
+                  </bpel:copy>
+                  <bpel:copy>
+                    <bpel:from>bpel:doXslTransform("userRoleOwner.xsl", $tnsReassignRequestMsg.reassignRequest, "metadata", $b4pReassignTaskRequestMsg.root)</bpel:from>
+                    <bpel:to>$tnsReassignRequestMsg.reassignRequest</bpel:to>
+                  </bpel:copy>
+                </bpel:assign>
+                <bpel:invoke partnerLink="taskManagementProcessAndTaskManagementSystemForPortTaskManagementServicesSOAPPlkVar" portType="tns:TaskManagementServices" operation="reassign" inputVariable="tnsReassignRequestMsg" outputVariable="tnsReassignResponseMsg" bpmn:label="Invoke TMS to reassign Task" name="Invoke_TMS_to_reassign_Task-3" bpmn:id="_6sT5MGXwEeKn5duZTyY8yw"></bpel:invoke>
+                <bpel:reply partnerLink="taskManagementProcessAndUIFWForUIFWPortPlkVar" portType="b4p:UIFWPortType" operation="reassignTask" variable="b4pReassignTaskResponseMsg" bpmn:label="Message_Intermediate_Event" name="Message_Intermediate_Event-1" bpmn:id="_-gTIMGXwEeKn5duZTyY8yw"></bpel:reply>
+                <bpel:assign bpmn:label="Mark Task as reassigned" name="Mark_Task_as_reassigned" bpmn:id="_bboSQGX1EeKn5duZTyY8yw">
+                  <bpel:copy>
+                    <bpel:from>true()</bpel:from>
+                    <bpel:to>$teaskReassigned</bpel:to>
+                  </bpel:copy>
+                </bpel:assign>
               </bpel:sequence>
             </bpel:onMessage>
           </bpel:pick>
