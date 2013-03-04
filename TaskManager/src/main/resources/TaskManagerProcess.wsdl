@@ -140,6 +140,13 @@
 
 	</bpws:propertyAlias>
 
+    <bpws:propertyAlias propertyName="b4p:taskId"
+		messageType="b4p:reassignTaskRequest" part="root">
+
+		<bpws:query>//b4p:taskId</bpws:query>
+
+	</bpws:propertyAlias>
+
 
 	<!-- WSDL Dependencies -->
 
@@ -196,6 +203,18 @@
 	<wsdl:message name="claimTaskResponse">
 
 		<wsdl:part name="root" element="b4p:claimTaskResponse" />
+
+	</wsdl:message>
+
+	<wsdl:message name="reassignTaskRequest">
+
+		<wsdl:part name="root" element="b4p:reassignTaskRequest" />
+
+	</wsdl:message>
+
+	<wsdl:message name="reassignTaskResponse">
+
+		<wsdl:part name="root" element="b4p:reassignTaskResponse" />
 
 	</wsdl:message>
 
@@ -346,6 +365,16 @@
 
 		</wsdl:operation>
 
+		<wsdl:operation name="reassignTask">
+
+			<wsdl:input message="b4p:reassignTaskRequest"
+				name="reassignTaskRequest" />
+
+			<wsdl:output message="b4p:reassignTaskResponse"
+				name="reassignTaskResponse" />
+
+		</wsdl:operation>
+
 		<wsdl:operation name="revokeTask">
 
 			<wsdl:input message="b4p:revokeTaskRequest"
@@ -482,6 +511,15 @@
 		</wsdl:operation>
 				<wsdl:operation name="skipTask">
 			<soap:operation soapAction="skipTask" style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+        <wsdl:operation name="reassignTask">
+			<soap:operation soapAction="claimTask" style="document" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>
